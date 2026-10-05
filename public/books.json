@@ -1,0 +1,7 @@
+[
+  { "id": 101, "title": "Clean Code", "author": "Robert C. Martin", "category": "Programming", "year": 2008, "available": true, "description": "A handbook of agile software craftsmanship." },
+  { "id": 102, "title": "Atomic Habits", "author": "James Clear", "category": "Self-Help", "year": 2018, "available": true, "description": "An easy way to build good habits." },
+  { "id": 103, "title": "Sapiens", "author": "Yuval Noah Harari", "category": "History", "year": 2011, "available": false, "description": "A brief history of humankind." },
+  { "id": 104, "title": "The Pragmatic Programmer", "author": "Andrew Hunt", "category": "Programming", "year": 1999, "available": true, "description": "Your journey to mastery." },
+  { "id": 105, "title": "Deep Work", "author": "Cal Newport", "category": "Self-Help", "year": 2016, "available": true, "description": "Rules for focused success." }
+]

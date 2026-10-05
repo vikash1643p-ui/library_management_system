@@ -1,0 +1,30 @@
+// useBooks.js
+import { useState, useMemo } from "react";
+import { initialBooks } from "../data/mockData";
+
+export function useBooks() {
+  const [books, setBooks] = useState(initialBooks);
+  const [titleSearch, setTitleSearch] = useState("");
+  const [authorSearch, setAuthorSearch] = useState("");
+  const [category, setCategory] = useState("");
+  const [onlyAvailable, setOnlyAvailable] = useState(false);
+
+  const filteredBooks = useMemo(() => {
+    return books.filter((b) => {
+      const matchTitle = b.title.toLowerCase().includes(titleSearch.toLowerCase());
+      const matchAuthor = b.author.toLowerCase().includes(authorSearch.toLowerCase());
+      const matchCategory = category ? b.category === category : true;
+      const matchAvail = onlyAvailable ? b.available : true;
+      return matchTitle && matchAuthor && matchCategory && matchAvail;
+    });
+  }, [books, titleSearch, authorSearch, category, onlyAvailable]);
+
+  return {
+    books, setBooks,
+    titleSearch, setTitleSearch,
+    authorSearch, setAuthorSearch,
+    category, setCategory,
+    onlyAvailable, setOnlyAvailable,
+    filteredBooks,
+  };
+}
