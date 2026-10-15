@@ -35,17 +35,47 @@ function LibraryBackground({ children }) {
 
 /* ===================== Reusable, exported components ===================== */
 
+
 export function Header() {
+  const { user, isAuthenticated, logout } = useAuth();
+  const navigate = useNavigate();
+
+  function handleLogout() {
+    logout();
+    navigate("/account/login", { replace: true });
+  }
+
   return (
-    <header className="bg-ink text-paper px-4 sm:px-6 py-3 sm:py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-0 border-b-4 border-spine">
+    <header className="bg-ink text-paper px-4 sm:px-6 py-3 sm:py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b-4 border-spine">
       <div className="flex items-center gap-2 sm:gap-3">
         <BookStackIcon className="w-8 h-8 sm:w-10 sm:h-10" />
-        <h1 className="font-display text-lg sm:text-2xl tracking-tight">Library Management System</h1>
+
+        <h1 className="font-display text-lg sm:text-2xl tracking-tight">
+          Library Management System
+        </h1>
       </div>
-      <span className="font-body text-xs sm:text-sm text-paper/70">Reading room, open now</span>
+
+      <div className="flex items-center justify-between gap-3">
+        <span className="font-body text-xs sm:text-sm text-paper/70">
+          {isAuthenticated
+            ? `Welcome, ${user?.name || "Member"}`
+            : "Reading room, open now"}
+        </span>
+
+        {isAuthenticated && (
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="bg-spine text-paper px-3 py-2 text-sm hover:opacity-90"
+          >
+            Logout
+          </button>
+        )}
+      </div>
     </header>
   );
 }
+
 
 export function Footer() {
   return (

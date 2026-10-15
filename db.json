@@ -1,0 +1,48 @@
+{
+  "books": [
+    {
+      "id": "1",
+      "title": "Clean Code",
+      "author": "Robert C. Martin",
+      "category": "Programming",
+      "year": 2008,
+      "available": true
+    },
+    {
+      "id": "2",
+      "title": "Atomic Habits",
+      "author": "James Clear",
+      "category": "Self-Help",
+      "year": 2018,
+      "available": true
+    },
+    {
+      "id": "3",
+      "title": "Deep Work",
+      "author": "Cal Newport",
+      "category": "Productivity",
+      "year": 2016,
+      "available": true
+    },
+    {
+      "title": "Library mang",
+      "author": "viks",
+      "category": "science",
+      "description": "This is a set of book",
+      "year": 2026,
+      "available": true,
+      "id": "06IHxGiZ70g"
+    }
+  ],
+  "borrowings": [
+    {
+      "id": "1",
+      "student": "Rahul",
+      "bookId": "1",
+      "bookTitle": "Clean Code",
+      "dueDate": "2026-10-30",
+      "status": "Borrowed"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}

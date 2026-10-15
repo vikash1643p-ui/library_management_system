@@ -48,22 +48,55 @@ const validatePhone = (v) => (!v ? "Phone number is required" : /^\d{10}$/.test(
 const validateIdOrEmail = (v) =>
   (!v ? "Member ID or email is required" : (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) || /^M\d{3,}$/.test(v)) ? "" : "Enter a valid email or Member ID");
 
+
 function Login() {
-  const [form, setForm] = useState({ idOrEmail: "", password: "" });
+  const [form, setForm] = useState({
+    idOrEmail: "",
+    password: ""
+  });
+
   const [errors, setErrors] = useState({});
+  const [apiError, setApiError] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const { login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+
   const from = location.state?.from?.pathname || "/account/profile";
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
     const idErr = validateIdOrEmail(form.idOrEmail);
     const pwErr = validatePassword(form.password);
-    setErrors({ idOrEmail: idErr, password: pwErr });
-    if (!idErr && !pwErr) {
-      login(form.idOrEmail);
+
+    setErrors({
+      idOrEmail: idErr,
+      password: pwErr
+    });
+
+    setApiError("");
+
+    if (idErr || pwErr) return;
+
+    setLoading(true);
+
+    try {
+
+      console.log("Member ID:", form.idOrEmail);
+      console.log("Password entered:", Boolean(form.password));
+
+      await login(form.idOrEmail, form.password);
       navigate(from, { replace: true });
+    } catch (error) {
+      setApiError(
+        error.response?.data?.message ||
+        error.message ||
+        "Login failed. Please try again."
+      );
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -72,32 +105,53 @@ function Login() {
       <div className="md:w-1/2 hidden md:block">
         <img
           src={LIBRARY_PHOTO_URL}
-          alt="Interior of the Carnegie Library of Pittsburgh"
+          alt="Library interior"
           className="w-full h-full object-cover"
         />
       </div>
+
       <div className="p-4 sm:p-6 md:w-1/2">
         <form onSubmit={handleSubmit}>
-          <h2 className="font-display text-lg mb-3">Member Login</h2>
+          <h2 className="font-display text-lg mb-3">
+            Member Login
+          </h2>
+
           <Input
             label="Member ID / Email"
             value={form.idOrEmail}
-            onChange={(e) => setForm({ ...form, idOrEmail: e.target.value })}
+            onChange={(e) =>
+              setForm({ ...form, idOrEmail: e.target.value })
+            }
             error={errors.idOrEmail}
+            required
           />
+
           <Input
             label="Password"
             type="password"
             value={form.password}
-            onChange={(e) => setForm({ ...form, password: e.target.value })}
+            onChange={(e) =>
+              setForm({ ...form, password: e.target.value })
+            }
             error={errors.password}
+            required
           />
-          <Button type="submit">Login</Button>
+
+          {apiError && (
+            <p className="text-overdue text-sm mb-3" role="alert">
+              {apiError}
+            </p>
+          )}
+
+          <Button type="submit" disabled={loading}>
+            {loading ? "Logging in..." : "Login"}
+          </Button>
         </form>
       </div>
     </div>
   );
 }
+
 
 function BorrowRequestForm() {
   const [memberId, setMemberId] = useState("");
